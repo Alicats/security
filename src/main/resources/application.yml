@@ -1,0 +1,34 @@
+spring:
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://localhost:3306/db_security?useUnicode=true&characterEncoding=utf-8&serverTimezone = GMT%2B8&allowMultiQueries=true
+    type: com.alibaba.druid.pool.DruidDataSource
+  security:
+    loginType: JSON
+
+
+#  对mybatis增删改查打印日志
+logging:
+  level:
+    cn.xej.mapper: trace
+
+
+
+mybatis:
+  mapper-locations: classpath:mapping/*.xml
+  type-aliases-package: cn.xej.pojo
+  configuration:
+    map-underscore-to-camel-case: true
+    auto-mapping-behavior: full
+
+jwt:
+  secret: ffjaksdfjaklf
+  expiration: 3600000
+  header: Authorization
+
+server:
+  port: 7777

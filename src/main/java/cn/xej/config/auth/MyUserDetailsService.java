@@ -1,6 +1,8 @@
 package cn.xej.config.auth;
 
+import cn.xej.mapper.MenuMapper;
 import cn.xej.mapper.MyUserDetailsServiceMapper;
+import cn.xej.pojo.Menu;
 import cn.xej.pojo.MyUserDetails;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -33,6 +35,10 @@ public class MyUserDetailsService implements UserDetailsService {
         //通过用户角色列表加载用户的资源权限列表
         List<String> authorties = myUserDetailsServiceMapper.findAuthorityByRoleCodes(roleCodes);
 
+
+        List<Menu> menuList = myUserDetailsServiceMapper.findMenuByRoleCodes(roleCodes);
+
+
         //角色是一个特殊的权限，ROLE_前缀
         roleCodes = roleCodes.stream()
                 .map(rc -> "ROLE_" +rc)
@@ -46,6 +52,7 @@ public class MyUserDetailsService implements UserDetailsService {
                 )
         );
 
+        myUserDetails.setMenuList(menuList);
 
         return myUserDetails;
     }

@@ -1,5 +1,6 @@
 package cn.xej.mapper;
 
+import cn.xej.pojo.Menu;
 import cn.xej.pojo.MyUserDetails;
 import org.apache.ibatis.annotations.Param;
 
@@ -17,4 +18,7 @@ public interface MyUserDetailsServiceMapper {
 
     // 根据用户名称获取该用户的权限
     List<String> findUrlsByUserName(String userId);
+
+    // 根据用户角色获取该用户的菜单
+    List<Menu> findMenuByRoleCodes(@Param("roleCodes")List<String> roleCodes);
 }

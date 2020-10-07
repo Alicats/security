@@ -1,8 +1,10 @@
 package cn.xej.config.auth.jwt;
 
+import cn.xej.common.VueMenu;
 import cn.xej.config.auth.MyUserDetailsService;
 import cn.xej.config.exception.CustomException;
 import cn.xej.config.exception.CustomExceptionType;
+import cn.xej.pojo.MyUserDetails;
 import cn.xej.pojo.User;
 import cn.xej.service.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -38,7 +40,7 @@ public class JwtAuthService {
      */
     public Map<String,Object> login(String username,String password){
         Map<String,Object> map = new HashMap<>();
-        List<String> menuList = new ArrayList<>();
+        List<String> menuUrlList = new ArrayList<>();
 
         try {
             UsernamePasswordAuthenticationToken upToken = new UsernamePasswordAuthenticationToken(username,password);
@@ -51,23 +53,30 @@ public class JwtAuthService {
 
         UserDetails userDetails = myUserDetailsService.loadUserByUsername(username);
 
+//        MyUserDetails myUserDetails = (MyUserDetails) myUserDetailsService.loadUserByUsername(username);
+
+
         Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
+//        Collection<? extends GrantedAuthority> authorities = myUserDetails.getAuthorities();
         // 获取该用户的菜单权限
         for (GrantedAuthority authority : authorities) {
             if(authority.getAuthority().substring(0,1).equals("/")){
-//                menuList.add(String.valueOf(authority));
-                menuList.add(authority.getAuthority().substring(1));
+                menuUrlList.add(authority.getAuthority().substring(1));
             }
         }
 
+//        String token = jwtTokenUtil.generateToken(myUserDetails);
         String token = jwtTokenUtil.generateToken(userDetails);
 
+//        LinkedList<VueMenu> menuList = userService.initMenu(myUserDetails.getMenuList());
 
+//        User user = userService.getUser(myUserDetails.getUsername());
         User user = userService.getUser(userDetails.getUsername());
 
-        map.put("menuList",menuList);
+        map.put("menuUrlList",menuUrlList);
         map.put("token",token);
         map.put("user",user);
+//        map.put("menuList",menuList);
 
 
 //        return jwtTokenUtil.generateToken(userDetails);

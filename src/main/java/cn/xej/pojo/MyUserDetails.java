@@ -4,6 +4,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 public class MyUserDetails implements UserDetails {
     String password; //密码
@@ -13,7 +15,15 @@ public class MyUserDetails implements UserDetails {
     boolean credentialsNonExpired;  //是否没过期
     boolean enabled;  //账号是否可用
     Collection<? extends GrantedAuthority> authorities;  //用户的权限集合
+    List<Menu> menuList;
 
+    public List<Menu> getMenuList() {
+        return menuList;
+    }
+
+    public void setMenuList(List<Menu> menuList) {
+        this.menuList = menuList;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -38,4 +38,16 @@
 		AND r.id = ur.role_id
 		AND u.username = #{userId}
     </select>
+
+
+    <select id="findMenuByRoleCodes" resultType="Menu">
+        SELECT DISTINCT (m.id),m.*
+        FROM sys_menu AS m,sys_role AS r,sys_role_menu AS rm
+        WHERE m.id = rm.menu_id
+        and r.id = rm.role_id
+        and r.role_code IN
+        <foreach collection="roleCodes" item="roleCode" open="(" separator="," close=")">
+            #{roleCode}
+        </foreach>
+    </select>
 </mapper>

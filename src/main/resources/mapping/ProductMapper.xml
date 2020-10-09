@@ -8,6 +8,25 @@
         SELECT *
         FROM `sys_product`
         WHERE user_name = #{username}
+        LIMIT #{pageIndex},#{pageSize}
+    </select>
+
+    <select id="getProductListCount" resultType="int">
+        SELECT COUNT(*)
+        FROM `sys_product`
+        WHERE user_name = #{username}
+    </select>
+
+    <delete id="delProduct">
+        DELETE
+        FROM sys_product
+        WHERE `id` = #{id}
+    </delete>
+
+    <select id="getProduct" resultType="Product">
+        SELECT *
+        FROM sys_product
+        WHERE `id` = #{id}
     </select>
 
 </mapper>

@@ -24,7 +24,7 @@ public class Product {
     private String introduce;
 
     /**
-     * 产品状态   0表示未审核，1表示审核通过
+     * 产品状态   0表示未审核，1表示审核通过, 2表示审核失败
      */
     private int status;
 

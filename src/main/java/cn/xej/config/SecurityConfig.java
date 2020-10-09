@@ -47,16 +47,18 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
-        http.csrf()  // 启用跨站csrf攻击防御
-                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                .ignoringAntMatchers("/authentication")
-                .and()
+        // 如果启用跨站csrf攻击防御，  前端 axios 传需要带着Cookies中的 XSRF-TOKEN的值
+        http
+//                .csrf()  // 启用跨站csrf攻击防御
+//                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+//                .ignoringAntMatchers("/authentication")
+//                .and()
                 .cors()
-                .and().addFilterBefore(jwtAuthenticationTokenFilter,UsernamePasswordAuthenticationFilter.class)
-                .logout()
                 .and()
-//                .csrf().disable()//禁用跨站csrf攻击防御，后面的章节会专门讲解
+                .addFilterBefore(jwtAuthenticationTokenFilter,UsernamePasswordAuthenticationFilter.class)
+                .logout()
+                .and()//禁用跨站csrf攻击防御，后面的章节会专门讲解
+                .csrf().disable()
                 .authorizeRequests() // 配置权限
                 .antMatchers("/authentication","/refreshToken").permitAll() //不需要通过登录验证就可以被访问的资源路径，用户可以任意访问
                 .antMatchers("/index").authenticated()
@@ -105,11 +107,20 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
     CorsConfigurationSource corsConfigurationSource() {
 
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:8080"));  // 前端端口号
-        configuration.setAllowedMethods(Arrays.asList("GET","POST"));
-        configuration.applyPermitDefaultValues();
+        // * 表示对所有的地址可以访问
+        configuration.addAllowedOrigin("*");
+        // 跨域的请求头
+        configuration.addAllowedHeader("*");
+        // 跨域的请求方法
+        configuration.addAllowedMethod("*");
+        configuration.setAllowCredentials(true);
+
+//        configuration.setAllowedOrigins(Arrays.asList("http://localhost:8080"));  // 前端端口号
+//        configuration.setAllowedMethods(Arrays.asList("GET","POST","DELETE","PUT"));
+//        configuration.applyPermitDefaultValues();
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        // 配置 可以访问的地址
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }

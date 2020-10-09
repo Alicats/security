@@ -12,9 +12,9 @@ spring:
 
 
 #  对mybatis增删改查打印日志
-logging:
-  level:
-    cn.xej.mapper: trace
+#logging:
+#  level:
+#    cn.xej.mapper: trace
 
 
 

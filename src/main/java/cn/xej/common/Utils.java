@@ -49,4 +49,9 @@ public class Utils {
         return vueMenuLinkedList;
     }
     */
+
+
+    public static int getPageIndex(int currentPage){
+        return (currentPage-1)*Constance.PAGE_SIZE;
+    }
 }

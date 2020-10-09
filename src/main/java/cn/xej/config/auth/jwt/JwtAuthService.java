@@ -51,13 +51,12 @@ public class JwtAuthService {
         }
 
 
-        UserDetails userDetails = myUserDetailsService.loadUserByUsername(username);
+//        UserDetails userDetails = myUserDetailsService.loadUserByUsername(username);
 
-//        MyUserDetails myUserDetails = (MyUserDetails) myUserDetailsService.loadUserByUsername(username);
+        MyUserDetails myUserDetails = (MyUserDetails) myUserDetailsService.loadUserByUsername(username);
 
+        Collection<? extends GrantedAuthority> authorities = myUserDetails.getAuthorities();
 
-        Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
-//        Collection<? extends GrantedAuthority> authorities = myUserDetails.getAuthorities();
         // 获取该用户的菜单权限
         for (GrantedAuthority authority : authorities) {
             if(authority.getAuthority().substring(0,1).equals("/")){
@@ -65,18 +64,16 @@ public class JwtAuthService {
             }
         }
 
-//        String token = jwtTokenUtil.generateToken(myUserDetails);
-        String token = jwtTokenUtil.generateToken(userDetails);
+        String token = jwtTokenUtil.generateToken(myUserDetails);
 
-//        LinkedList<VueMenu> menuList = userService.initMenu(myUserDetails.getMenuList());
+        LinkedList<VueMenu> menuList = userService.initMenu(myUserDetails.getMenuList());
 
-//        User user = userService.getUser(myUserDetails.getUsername());
-        User user = userService.getUser(userDetails.getUsername());
+        User user = userService.getUser(myUserDetails.getUsername());
 
         map.put("menuUrlList",menuUrlList);
         map.put("token",token);
         map.put("user",user);
-//        map.put("menuList",menuList);
+        map.put("menuList",menuList);
 
 
 //        return jwtTokenUtil.generateToken(userDetails);
